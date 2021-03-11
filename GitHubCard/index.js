@@ -3,6 +3,19 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+import axios from 'axios'
+
+const cards = document.querySelector('.cards')
+
+axios
+.get('https://api.github.com/users/g3or3')
+.then(res => {
+  const newCard = createCard(res.data)
+  cards.appendChild(newCard)
+})
+.catch(err => {
+  console.log(err)
+})
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +41,17 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+followersArray.forEach(handle => {
+  axios
+  .get('https://api.github.com/users/' + handle)
+  .then(res => {
+    const newCard = createCard(res.data)
+    cards.appendChild(newCard)
+  })
+  .catch(err => console.log(err))
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +72,51 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function createCard({avatar_url, name, login, location, html_url, followers, following, bio, ...rest}) {
+  const card = document.createElement('div')
+  card.classList.add('card')
+
+  const img = document.createElement('img')
+  img.src = avatar_url
+
+  const cardInfo = document.createElement('div')
+  cardInfo.classList.add('card-info')
+
+  const h3 = document.createElement('h3')
+  h3.classList.add('name')
+  h3.textContent = name
+
+  const p1 = document.createElement('p')
+  p1.classList.add('username')
+  p1.textContent = login
+
+  const p2 = document.createElement('p')
+  p2.textContent = `Location: ${location}`
+
+  const p3 = document.createElement('p')
+  p3.textContent = `Profile: `
+
+  const a = document.createElement('a')
+  a.href = html_url
+  a.textContent = html_url
+  a.style.textDecoration = 'none'
+
+  const p4 = document.createElement('p')
+  p4.textContent = `Followers: ${followers}`
+
+  const p5 = document.createElement('p')
+  p5.textContent = `Following: ${following}`
+
+  const p6 = document.createElement('p')
+  p6.textContent = `Bio: ${bio}`
+
+  card.append(img, cardInfo)
+  cardInfo.append(h3, p1, p2, p3, p4, p5, p6)
+  p3.append(a)
+
+  return card
+}
 
 /*
   List of LS Instructors Github username's:
