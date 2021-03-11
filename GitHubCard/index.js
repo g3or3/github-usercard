@@ -73,6 +73,7 @@ followersArray.forEach(handle => {
     </div>
 */
 
+// eslint-disable-next-line no-unused-vars
 function createCard({avatar_url, name, login, location, html_url, followers, following, bio, ...rest}) {
   const card = document.createElement('div')
   card.classList.add('card')
